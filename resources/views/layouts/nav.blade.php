@@ -13,7 +13,7 @@
             <a class="nav-link @if (request()->is('about')) active @endif" href="{{ route('about') }}">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link @if (request()->is('posts')) active @endif" href="{{ route('posts') }}">Posts</a>
+            <a class="nav-link @if (request()->is('posts')) active @endif" href="{{ route('posts.index') }}">Posts</a>
           </li>
           <li class="nav-item">
             <a class="nav-link @if (request()->is('todos')) active @endif" href="{{ route('todos.index') }}">Todos</a>
