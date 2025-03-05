@@ -11,7 +11,7 @@
 
                 <div class="mb-3 d-flex justify-content-between align-items-center border-bottom">
                 <h2>Post List</h2>
-                <a class="btn btn-primary" href="#"><i class="bi bi-plus"></i> Create</a>
+                <a class="btn btn-primary" href="{{ route('posts.create') }}"><i class="bi bi-plus"></i> Create</a>
                 </div>
 
                 @if ($errors->any())
@@ -41,14 +41,20 @@
                     <table class="table text-center align-middle table-striped">
                         <thead>
                             <tr>
+                                <th class="text-start">#</th>
                                 <th class="text-start">Title</th>
+                                <th class="text-start">Category</th>
+                                <th class="text-start">Author</th>
                                 <th class="text-end">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($posts as $post)
                                 <tr>
+                                    <td class="text-start">{{ $posts->firstItem() + $loop->index }}</td>
                                     <td class="text-start">{{ $post->title }}</td>
+                                    <td class="text-start">{{ $post->category->title }}</td>
+                                    <td class="text-start">{{ $post->user->name }}</td>
                                     <td class="text-end">
                                         <a href="{{ route('posts.edit', $post->id) }}" class="d-inline btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
                                         <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
@@ -61,6 +67,15 @@
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="pt-4">
+                                        {{ $posts->links() }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
 
             </div>

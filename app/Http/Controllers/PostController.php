@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Http\Requests\StorePostRequest;
-use Illuminate\Support\Facades\Request;
-use App\Http\Requests\UpdatePostRequest;
+use App\Models\User;
+use App\Models\Category;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -14,8 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        // get post
-        $posts = Post::all();
+        // get post with pagination orderby desc update at desc
+        $posts = Post::orderBy('updated_at', 'desc')->paginate(10);
         return view('posts.index', compact('posts'));
     }
 
@@ -24,7 +24,10 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+        // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
+        $users = User::all();
+        return view('posts.create', compact('categories', 'users'));
     }
 
     /**
@@ -32,7 +35,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255|min:4',
+            'content' => 'required',
+            'category_id' => 'required',
+            'user_id' => 'required',
+        ]);
+
+        Post::create($request->all());
+
+        return redirect()->route('posts.index')->with('success', 'Post created successfully');
+
     }
 
     /**
