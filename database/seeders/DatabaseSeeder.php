@@ -16,16 +16,24 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Mg Mg',
+            'email' => 'mgmg@example.com',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Hla Hla',
+            'email' => 'hlahla@example.com',
+        ]);
 
         $this->call([
-            TodoSeeder::class,
-            PostSeeder::class,
-            // CategorySeeder::class,
-            // PostSeeder::class
+            CategorySeeder::class,
+            PostSeeder::class
         ]);
 
     }

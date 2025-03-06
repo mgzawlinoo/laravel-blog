@@ -19,8 +19,8 @@ class PostFactory extends Factory
         return [
             'title' => fake()->unique()->sentence(5, true),
             'content' => fake()->paragraph(5),
-            'category_id' => CategoryFactory::new(),
-            'user_id' => UserFactory::new(),
+            'category_id' => rand(1, 3),
+            'user_id' => rand(1, 3)
         ];
     }
 }

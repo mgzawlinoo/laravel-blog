@@ -11,7 +11,7 @@
 
                 <div class="mb-3 d-flex justify-content-between align-items-center border-bottom">
                 <h2>Post List</h2>
-                <a class="btn btn-primary" href="{{ route('posts.create') }}"><i class="bi bi-plus"></i> Create</a>
+                <a class="btn btn-primary" href="{{ route('posts.create') }}"><i class="text-white fa-regular fa-plus"></i> Create</a>
                 </div>
 
                 @if ($errors->any())
@@ -43,6 +43,7 @@
                             <tr>
                                 <th class="text-start">#</th>
                                 <th class="text-start">Title</th>
+                                <th class="text-center">Image</th>
                                 <th class="text-start">Category</th>
                                 <th class="text-start">Author</th>
                                 <th class="text-end">Action</th>
@@ -53,14 +54,15 @@
                                 <tr>
                                     <td class="text-start">{{ $posts->firstItem() + $loop->index }}</td>
                                     <td class="text-start">{{ $post->title }}</td>
+                                    <td class="text-center"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
                                     <td class="text-start">{{ $post->category->title }}</td>
                                     <td class="text-start">{{ $post->user->name }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('posts.edit', $post->id) }}" class="d-inline btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                                        <a href="{{ route('posts.edit', $post->id) }}" class="d-inline btn btn-warning btn-sm"><i class="text-white fa-regular fa-pen-to-square"></i></a>
                                         <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                            <button onclick="return confirm('Are you sure?')" type="submit" class="btn btn-danger btn-sm"><i class="text-white fa-regular fa-trash-can"></i></button>
                                         </form>
 
                                     </td>

@@ -8,6 +8,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdatePostRequest;
 
 class PostController extends Controller
@@ -44,7 +45,14 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        Post::create($request->all());
+        $path = $request->file('photo')->store('photos', 'public');
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'photo' => $path,
+            'category_id' => $request->category_id,
+            'user_id' => $request->user_id
+        ]);
         return redirect()->route('posts.index')->with('success', 'Post created successfully');
     }
 
@@ -72,7 +80,21 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
-        $post->update($request->all());
+        // update လုပ်တဲ့ အထဲ ပုံ အသစ် မပါရင် နဂို db ထဲက path ကိုပဲ update ထည့်မယ်
+        // တကယ်လို့ ပါနေရင် db က path ထဲက ပုံကို ဖျက်ပြီး အခု ပုံကို upload တင်မယ်, path အသစ်ကို update ထည့်မယ်
+        $path = $post->photo;
+        if($request->hasFile('photo')) {
+            Storage::disk('public')->delete($path);
+            $path = $request->file('photo')->store('photos', 'public');
+        }
+
+        $post->update([
+            'title' => $request->title,
+            'content' => $request->content,
+            'photo' => $path,
+            'category_id' => $request->category_id,
+            'user_id' => $request->user_id
+        ]);
         return redirect()->route('posts.index')->with('success', 'Post updated successfully');
     }
 
@@ -81,7 +103,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        $post->delete();
+        $result = $post->delete();
+        if($result) {
+            Storage::disk('public')->delete($post->photo);
+        }
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }
 }

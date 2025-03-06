@@ -11,7 +11,7 @@
 
                 <div class="mb-3 d-flex justify-content-between align-items-center border-bottom">
                 <h2>Edit Post</h2>
-                <a class="btn btn-secondary" href="{{ route('posts.index') }}"><i class="bi bi-arrow-left"></i> Back</a>
+                <a class="btn btn-secondary" href="{{ route('posts.index') }}"><i class="text-white fa-solid fa-arrow-left"></i> Back</a>
                 </div>
 
                 <div class="mx-auto col-md-6">
@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('posts.update', $post->id) }}" method="POST">
+                    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -49,6 +49,11 @@
                                     <option value="{{ $user->id }}" {{$post->user_id == $user->id ? 'selected' : ''}}>{{ $user->name }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="photo" class="form-label">Upload Image</label>
+                            <input type="file" class="form-control" id="photo" name="photo">
                         </div>
 
                         <div class="mb-3">
