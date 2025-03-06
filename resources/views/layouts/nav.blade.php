@@ -19,11 +19,10 @@
             <a class="nav-link @if (request()->is('todos')) active @endif" href="{{ route('todos.index') }}">Todos</a>
           </li>
         </ul>
-        <form class="d-flex" role="search" method="GET" action="{{ route('todos.search') }}">
+        <form class="d-flex" role="search" method="GET" action="{{ route('posts.search') }}">
             @csrf
-            @method('GET')
-          <input class="form-control me-2" type="text" name="q" placeholder="Search" aria-label="Search">
-          <button class="text-white btn btn-warning" type="submit">Search</button>
+            <input class="form-control me-2" type="text" name="q" placeholder="Search" aria-label="Search">
+            <button class="text-white btn btn-warning" type="submit">Search</button>
         </form>
       </div>
     </div>

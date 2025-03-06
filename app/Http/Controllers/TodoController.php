@@ -11,15 +11,12 @@ class TodoController extends Controller
     public function index()
     {
         // $data = Todo::all(); // eloquent orm
-        $data = DB::table('todos')->get()->sortByDesc('created_at');
+        $data = Todo::orderBy('updated_at', 'desc')->paginate(5);
         return view('todos.index', ['todos' => $data]);
     }
 
-    // function for search
-    public function search() {
-        $q = request('q');
-        $data = DB:: table('todos')->where('name', 'like', "%{$q}%")->get();
-        return view('todos.index', ['todos' => $data, 'q' => $q]);
+    public function show() {
+
     }
 
     public function create() {
@@ -49,17 +46,15 @@ class TodoController extends Controller
         return view('todos.edit', ['todo' => $todo]);
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, Todo $todo) {
 
         $request->validate([
             'name' => 'required|string|max:255|min:8',
             'completed' => 'integer|in:0,1'
         ]);
 
-        $todo = Todo::find($id);
-        $todo->name = $request->name;
         $todo->completed = $request->completed ? true: false;
-        $todo->update();
+        $todo->update($request->all());
 
         return redirect()->route('todos.index')->with('success', 'Todo updated successfully');
     }
@@ -72,8 +67,7 @@ class TodoController extends Controller
         return redirect()->route('todos.index');
     }
 
-    public function destroy($id) {
-        $todo = Todo::find($id);
+    public function destroy(Todo $todo) {
         $todo->delete();
         return redirect()->route('todos.index' )->with('success', 'Todo deleted successfully');
     }

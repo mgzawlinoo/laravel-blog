@@ -31,7 +31,7 @@
                         @method('PUT')
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="name" placeholder="Enter title" value="{{ $todo->name }}">
+                            <input type="text" class="form-control" id="title" name="name" placeholder="Enter title" value="{{ old('title', $todo->name) }}">
                         </div>
                         <div class="mb-3">
                             <label for="title" class="form-label">Is Completed? </label>

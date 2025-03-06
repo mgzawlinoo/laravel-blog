@@ -71,7 +71,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="pt-4">
-                                        {{ $posts->links() }}
+                                        {{ $posts->withQueryString()->links() }}
                                     </div>
                                 </td>
                             </tr>

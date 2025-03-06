@@ -13,11 +13,11 @@ Route::get('/about',[AboutController::class, 'index'])->name('about');
 
 // Route For Posts
 Route::resource('posts', PostController::class);
+Route::get('/posts-search', [PostController::class, 'search'])->name('posts.search');
 
 // Route For Todos
 Route::resource('todos', TodoController::class);
 Route::put('/todos/{todo}/status', [TodoController::class, 'status'])->name('todos.status');
-Route::get('/todos/search', [TodoController::class, 'search'])->name('todos.search');
 
 
 // Test Route

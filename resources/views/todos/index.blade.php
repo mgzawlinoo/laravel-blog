@@ -41,6 +41,7 @@
                     <table class="table text-center align-middle table-striped">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th class="text-start">Name</th>
                                 <th>Status</th>
                                 <th class="text-end">Action</th>
@@ -49,6 +50,7 @@
                         <tbody>
                             @foreach ($todos as $todo)
                                 <tr>
+                                    <td>{{ $loop->index + $todos->firstItem() }}</td>
                                     <td class="text-start">{{ $todo->name }}</td>
                                     <td>
                                         @if($todo->completed)
@@ -79,6 +81,13 @@
                                 </tr>
                             @endforeach
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="mt-4 d-flex justify-content-center">{{ $todos->withQueryString()->links() }}</div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
 
             </div>
