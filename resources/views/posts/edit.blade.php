@@ -26,7 +26,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('posts.update', $post->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('posts.update', $post->slug) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
@@ -38,7 +38,7 @@
                             <label for="category_id" class="form-label">Category</label>
                             <select class="form-select" id="category_id" name="category_id">
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}" {{$post->category_id == $category->id ? 'selected' : ''}}>{{ $category->title }}</option>
+                                    <option value="{{ $category->id }}" {{$post->category_id == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -53,7 +53,10 @@
 
                         <div class="mb-3">
                             <label for="photo" class="form-label">Upload Image</label>
-                            <input type="file" class="form-control" id="photo" name="photo">
+                            <div class="gap-3 d-flex align-items-center">
+                                <div id="preview-image"><img src="@if($post->photo) {{ asset('storage/' . $post->photo) }} @else https://placehold.co/150   @endif" class="rounded-circle" style="max-width: 150px; height: auto" alt="Photo"></div>
+                                <input type="file" class="form-control" id="photo" name="photo">
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -61,7 +64,7 @@
                             <textarea class="form-control" id="content" name="content" rows="6" placeholder="Enter content">{{ old('content', $post->content) }}</textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-warning">Update</button>
                     </form>
                 </div>
 
@@ -69,5 +72,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    const chooseFile = document.getElementById("photo");
+    const imgPreview = document.getElementById("preview-image");
+
+    chooseFile.addEventListener("change", function () {
+        getImgData();
+    });
+
+    function getImgData() {
+        const files = chooseFile.files[0];
+        if (files) {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(files);
+            fileReader.addEventListener("load", function () {
+            imgPreview.style.display = "block";
+            imgPreview.innerHTML = '<img class="rounded-circle" style="max-width: 150px; height: auto" alt="Teacher" src="' + this.result + '" />';
+            });
+        }
+    }
+</script>
 
 @endsection

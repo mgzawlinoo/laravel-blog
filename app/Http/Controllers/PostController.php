@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StorePostRequest;
@@ -25,8 +26,11 @@ class PostController extends Controller
 
     public function search(Request $request) {
         $q = $request['q'];
-        $data = Post::where('title', 'like', "%{$q}%")->orderBy('updated_at', 'desc')->paginate(5);
-        return view('posts.index', ['posts' => $data, 'q' => $q]);
+        if(strlen($q) > 2) {
+            $data = Post::where('title', 'like', "%{$q}%")->orderBy('updated_at', 'desc')->paginate(5);
+            return view('posts.index', ['posts' => $data, 'q' => $q]);
+        }
+        return redirect()->route('posts.index')->with('search', 'Search must be at least 3 characters long');
     }
 
     /**
@@ -45,9 +49,12 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $path = $request->file('photo')->store('photos', 'public');
+        if($request->hasFile('photo')) $path = $request->file('photo')->store('photos', 'public');
+        else  $path = null;
+
         Post::create([
             'title' => $request->title,
+            'slug' => Str::slug($request->title),
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
@@ -61,7 +68,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -84,12 +91,13 @@ class PostController extends Controller
         // တကယ်လို့ ပါနေရင် db က path ထဲက ပုံကို ဖျက်ပြီး အခု ပုံကို upload တင်မယ်, path အသစ်ကို update ထည့်မယ်
         $path = $post->photo;
         if($request->hasFile('photo')) {
-            Storage::disk('public')->delete($path);
+            if(!empty($path)) { Storage::disk('public')->delete($path); }
             $path = $request->file('photo')->store('photos', 'public');
         }
 
         $post->update([
             'title' => $request->title,
+            'slug' => Str::slug($request->title),
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
@@ -105,7 +113,7 @@ class PostController extends Controller
     {
         $result = $post->delete();
         if($result) {
-            Storage::disk('public')->delete($post->photo);
+            if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
         }
         return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
     }

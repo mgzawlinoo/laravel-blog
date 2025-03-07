@@ -1,4 +1,4 @@
-<nav class="mb-5 navbar navbar-expand-lg bg-success-subtle">
+<nav class="mb-5 navbar navbar-expand-lg bg-danger-subtle">
     <div class="container">
       <a class="navbar-brand" href="/">Blog</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
