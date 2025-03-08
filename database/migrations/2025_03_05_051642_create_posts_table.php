@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('photo')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('published')->default(true);
             $table->timestamps();
         });
     }

@@ -36,6 +36,7 @@ class StorePostRequest extends FormRequest
             'category_id' => 'required',
             'user_id' => 'required',
             'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
+            'description' => 'required|string|max:255',
         ];
     }
 
@@ -52,6 +53,8 @@ class StorePostRequest extends FormRequest
             'photo.image' => 'ဓာတ်ပုံ မဟုတ်ပါ',
             'photo.mimes' => 'ဓာတ်ပုံ အမျိုးအစား အဖြစ် png, jpg, jpeg ကို သာလက်ခံပါတယ်',
             'photo.max' => 'ဓာတ်ပုံ အများဆုံး 2mb သာ ရှိရမည်',
+            'description.required' => 'Description လိုအပ်ပါတယ်',
+            'description.max' => 'Description အများဆုံး ၂၅၅ လုံးသာ ရှိရမည်',
         ];
     }
 }

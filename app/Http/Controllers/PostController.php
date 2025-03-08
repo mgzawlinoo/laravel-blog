@@ -20,17 +20,17 @@ class PostController extends Controller
     public function index()
     {
         // get post with pagination orderby desc update at desc
-        $posts = Post::orderBy('updated_at', 'desc')->paginate(5);
-        return view('posts.index', compact('posts'));
+        $posts = Post::orderBy('published', 'desc')->orderBy('updated_at', 'desc')->paginate(5);
+        return view('backend.posts.index', compact('posts'));
     }
 
     public function search(Request $request) {
         $q = $request['q'];
         if(strlen($q) > 2) {
             $data = Post::where('title', 'like', "%{$q}%")->orderBy('updated_at', 'desc')->paginate(5);
-            return view('posts.index', ['posts' => $data, 'q' => $q]);
+            return view('backend.posts.index', ['posts' => $data, 'q' => $q]);
         }
-        return redirect()->route('posts.index')->with('search', 'Search must be at least 3 characters long');
+        return redirect()->route('backend.posts.index')->with('search', 'Search must be at least 3 characters long');
     }
 
     /**
@@ -41,7 +41,7 @@ class PostController extends Controller
         $categories = Category::all();
         // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
         $users = User::all();
-        return view('posts.create', compact('categories', 'users'));
+        return view('backend.posts.create', compact('categories', 'users'));
     }
 
     /**
@@ -58,9 +58,11 @@ class PostController extends Controller
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
+            'published' => $request->published ? 1 : 0,
+            'description' => $request->description,
         ]);
-        return redirect()->route('posts.index')->with('success', 'Post created successfully');
+        return redirect()->route('backend.posts.index')->with('success', 'Post created successfully');
     }
 
     /**
@@ -68,7 +70,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        return view('backend.posts.show', compact('post'));
     }
 
     /**
@@ -79,7 +81,7 @@ class PostController extends Controller
         $categories = Category::all();
         // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
         $users = User::all();
-        return view('posts.edit', compact('post', 'categories', 'users'));
+        return view('backend.posts.edit', compact('post', 'categories', 'users'));
     }
 
     /**
@@ -101,9 +103,11 @@ class PostController extends Controller
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id
+            'user_id' => $request->user_id,
+            'published' => $request->published ? 1 : 0,
+            'description' => $request->description,
         ]);
-        return redirect()->route('posts.index')->with('success', 'Post updated successfully');
+        return redirect()->route('backend.posts.index')->with('success', 'Post updated successfully');
     }
 
     /**
@@ -115,6 +119,6 @@ class PostController extends Controller
         if($result) {
             if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
         }
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully');
+        return redirect()->route('backend.posts.index')->with('success', 'Post deleted successfully');
     }
 }
