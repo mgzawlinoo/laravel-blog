@@ -4,34 +4,32 @@
 
 @section('content')
 
-    <div class="p-3 mb-3 rounded bg-warning-subtle d-flex justify-content-between align-items-center">
-        <h4 class="p-0 m-0">Create Post</h4>
-        <a class="btn btn-secondary" href="{{ route('backend.posts.index') }}"><i class="fa-solid fa-arrow-left"></i> Back</a>
-    </div>
+    <x-header class="btn-secondary" title="Create Post" :route="route('backend.posts.index')" linkText="Back"></x-header>
 
     <div class="mx-auto col-12 col-md-8">
         <form action="{{ route('backend.posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control @if($errors->has('title') || $errors->has('slug')) is-invalid @endif" id="title" name="title" placeholder="Enter title" value="{{ old('title') }}">
-                @error('title')
-                    <div class="my-2 text-danger ms-2">{{ $message }}</div>
-                @enderror
-                @error('slug')
-                    <div class="my-2 text-danger ms-2">{{ $message }}</div>
-                @enderror
-            </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" rows="3" placeholder="Enter description">{{ old('description') }}</textarea>
-                @error('description')
-                <div class="my-2 text-danger ms-2">{{ $message }}</div>
-                @enderror
-        </div>
-            
+
+            <x-forms.row>
+                <x-forms.label for="title">Title</x-forms.label>
+                <x-forms.text-input name="title" type="text"
+                    :value="old('title')"
+                    :isInvalid="$errors->has('title') || $errors->has('slug')"
+                />
+                <x-forms.error :errors="$errors->get('title')" />
+                <x-forms.error :errors="$errors->get('slug')" />
+            </x-forms.row>
+
+            <x-forms.row>
+                <x-forms.label for="description">Description</x-forms.label>
+                <x-forms.text-input name="description" type="text"
+                    :value="old('description')"
+                    :isInvalid="$errors->has('description')"
+                />
+                <x-forms.error :errors="$errors->get('description')" />
+            </x-forms.row>
 
             <div class="mb-3">
                 <label for="category_id" class="form-label">Category</label>
@@ -67,13 +65,14 @@
                     <div class="my-2 text-danger ms-2">{{ $message }}</div>
                 @enderror
             </div>
-            
+
             <div class="mb-3">
                 <label for="published" class="form-label">Published</label>
                 <input type="checkbox" class="form-check-input" id="published" name="published" value="1" {{ old('published') ? 'checked' : '' }}>
             </div>
 
-            <div class="mt-3 text-end"><button type="submit" class="btn btn-primary">Submit</button></div>
+            <x-forms.button class="btn-primary">Submit</x-forms.button>
+
         </form>
     </div>
 

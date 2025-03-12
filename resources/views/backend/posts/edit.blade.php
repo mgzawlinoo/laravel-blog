@@ -4,16 +4,15 @@
 
 @section('content')
 
-    <div class="p-3 mb-3 rounded bg-warning-subtle d-flex justify-content-between align-items-center">
-        <h4 class="p-0 m-0">Edit Post</h4>
-        <a class="btn btn-secondary" href="{{ route('backend.posts.index') }}"><i class="text-white fa-solid fa-arrow-left"></i> Back</a>
-    </div>
+    <x-header class="btn-secondary" title="Edit Post" :route="route('backend.posts.index')" linkText="Back"></x-header>
 
     <div class="mx-auto col-md-8">
 
         <form action="{{ route('backend.posts.update', $post->slug) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+
+
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control @if($errors->has('title') || $errors->has('slug')) is-invalid @endif" id="title" name="title" placeholder="Enter title" value="{{ old('title', $post->title) }}">
@@ -32,6 +31,17 @@
                 <div class="my-2 text-danger ms-2">{{ $message }}</div>
             @enderror
             </div>
+
+
+
+
+
+
+
+
+
+
+
             
             <div class="mb-3 row">
                 <div class="col-md-6">
@@ -48,10 +58,10 @@
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" {{$post->user_id == $user->id ? 'selected' : ''}}>{{ $user->name }}</option>
                         @endforeach
-                    </select>   
+                    </select>
                 </div>
             </div>
-            
+
             <div class="mb-3">
                 <label for="photo" class="form-label">Upload Image</label>
                 <div class="gap-3 d-flex align-items-center">

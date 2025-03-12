@@ -4,10 +4,8 @@
 
 @section('content')
 
-    <div class="p-3 mb-3 rounded bg-warning-subtle d-flex justify-content-between align-items-center">
-        <h4 class="p-0 m-0">Post List</h4>
-        <a class="btn btn-primary" href="{{ route('backend.posts.create') }}"><i class="text-white fa-regular fa-plus"></i> Create</a>
-    </div>
+   <x-header class="btn-primary" title="Post List" :route="route('backend.posts.create')" icon="fa-solid fa-plus"  linkText="Create">
+   </x-header>
 
     @if ($errors->any())
             <div class="alert alert-danger">
@@ -57,7 +55,7 @@
                 @foreach ($posts as $post)
                     <tr>
                         <td class="text-start">{{ $posts->firstItem() + $loop->index }}</td>
-                        <td class="text-start">{{ $post->title }}</td>
+                        <td class="text-start">{!! redColor($post->title) !!}</td>
                         <td class="text-center"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
                         <td class="text-center">{{ $post->category->name }}</td>
                         <td class="text-center">{{ $post->user->name }}</td>

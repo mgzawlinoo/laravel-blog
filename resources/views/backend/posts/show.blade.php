@@ -4,10 +4,9 @@
 
 @section('content')
 
-    <div class="p-3 mb-3 rounded bg-warning-subtle d-flex justify-content-between align-items-center">
-        <h4 class="p-0 m-0">{{ $post->title }}</h4>
-        <a class="btn btn-secondary" href="{{ route('backend.posts.index') }}"><i class="text-white fa-solid fa-arrow-left"></i> Back</a>
-    </div>
+    <x-header class="btn-secondary" :title="$post->title" :route="route('backend.posts.index')" linkText="Back">
+        <b>Description : </b>{{ $post->description }}
+    </x-header>
 
     <div class="pb-5 mx-auto mb-5 col-md-8">
         <div class="my-4">
