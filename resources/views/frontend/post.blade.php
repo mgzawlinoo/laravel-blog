@@ -27,6 +27,7 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="py-4 navbar-nav ms-auto py-lg-0">
                         <li class="nav-item"><a class="py-3 nav-link px-lg-3 py-lg-4" href="{{ route('index') }}">Home</a></li>
+
                     </ul>
                 </div>
             </div>
@@ -47,32 +48,31 @@
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-8">
+                <div class="col-md-12 col-lg-12 col-xl-12">
 
-                    @foreach ($posts as $post)
-                        <x-post.post-item :post="$post" />
-                    @endforeach
+                    <x-header class="" :title="$post->title" :route="route('index')" linkText="Back">
+                    </x-header>
 
-                </div>
+                    <p class="post-meta">
+                        <span class="text-primary">Posted by</span>
+                        <a class="text-decoration-none" href="{{ route('getPostsByUser', $post->user) }}">{{ $post->user->name }}</a>
+                        on {{ $post->updated_at->diffForHumans() }} |
+                        <span class="text-primary">Category: </span><a class="text-decoration-none" href="{{ route('getPostsByCategory', $post->category) }}">{{ $post->category->name }}</a>
+                    </p>
 
-                <div class="col-md-2 col-lg-4 col-xl-4">
+                    <div class="pb-5 mx-auto mb-5">
+                        <div class="my-4">
+                            {!! $post->photo ? '<img src="' . asset('storage/' . $post->photo) . '" alt="Post Photo" style="max-width: 100%; height: auto">' : '' !!}
+                        </div>
 
-                    <div class="post-preview">
-                        <h3>Categories</h3>
-                        <ul class="list-group">
-                            @foreach ($categories as $category)
-                                <li class="list-group-item"><a href="{{ route('getPostsByCategory', $category) }}">{{ $category->name }}</a></li>
-                            @endforeach
-                        </ul>
+                        {!! $post->content !!}
 
-                        <h3 class="mt-4">Users</h3>
-                        <ul class="list-group">
-                            @foreach ($users as $user)
-                                <li class="list-group-item"><a href="{{ route('getPostsByUser', $user) }}">{{ $user->name }}</a></li>
-                            @endforeach
-                        </ul>
                     </div>
+
                 </div>
+
+
+
             </div>
         </div>
         <!-- Footer-->

@@ -17,3 +17,11 @@ Route::prefix('backend')->name('backend.')->group(function () {
 // Route For Frontend
 Route::get('/', [HomeController::class, 'index'])->name('index');
 
+// posts by category
+Route::get('/category/{category}', [HomeController::class, 'getPostsByCategory'])->name('getPostsByCategory');
+
+// posts by user
+Route::get('/user/{user}', [HomeController::class, 'getPostsByUser'])->name('getPostsByUser');
+
+// posts by post
+Route::get('/post/{post}', [HomeController::class, 'post'])->name('post');
