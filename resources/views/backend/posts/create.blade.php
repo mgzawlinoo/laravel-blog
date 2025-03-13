@@ -31,22 +31,15 @@
                 <x-forms.error :errors="$errors->get('description')" />
             </x-forms.row>
 
-            <div class="mb-3">
-                <label for="category_id" class="form-label">Category</label>
-                <select class="form-select" id="category_id" name="category_id">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="user_id" class="form-label">User</label>
-                <select class="form-select" id="user_id" name="user_id">
-                    @foreach ($users as $user)
-                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                    @endforeach
-                </select>
-            </div>
+            <x-forms.row>
+                <x-forms.label for="category_id">Category</x-forms.label>
+                <x-forms.select :options="$categories" id="category_id" name="category_id" />
+            </x-forms.row>
+
+            <x-forms.row>
+                <x-forms.label for="user_id">User</x-forms.label>
+                <x-forms.select :options="$users" id="user_id" name="user_id" />
+            </x-forms.row>
 
             <div class="mb-3">
                 <label for="photo" class="form-label">Upload Image</label>

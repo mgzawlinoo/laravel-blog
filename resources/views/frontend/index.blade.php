@@ -47,31 +47,36 @@
         <!-- Main Content-->
         <div class="container px-4 px-lg-5">
             <div class="row gx-4 gx-lg-5 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-8">
+                <div class="col-lg-8 col-xl-8">
 
-                    @foreach ($posts as $post)
-                        <x-post.post-item :post="$post" />
-                    @endforeach
+                    @if ($posts->isEmpty())
+                        <p>No posts available</p>
+                    @else
+                        @foreach ($posts as $post)
+                            <x-post.post-item :post="$post" />
+                        @endforeach
+                    @endif
 
                 </div>
 
-                <div class="col-md-2 col-lg-4 col-xl-4">
+                <div class="col-lg-4 col-xl-4">
 
                     <div class="post-preview">
                         <h3>Categories</h3>
                         <ul class="list-group">
                             @foreach ($categories as $category)
-                                <li class="list-group-item"><a href="{{ route('getPostsByCategory', $category) }}">{{ $category->name }}</a></li>
+                                <li class="list-group-item"><a href="{{ route('getPostsByCategory', $category->slug) }}">{{ $category->name }}</a></li>
                             @endforeach
                         </ul>
 
                         <h3 class="mt-4">Users</h3>
                         <ul class="list-group">
                             @foreach ($users as $user)
-                                <li class="list-group-item"><a href="{{ route('getPostsByUser', $user) }}">{{ $user->name }}</a></li>
+                                <li class="list-group-item"><a href="{{ route('getPostsByUser', $user->id) }}">{{ $user->name }}</a></li>
                             @endforeach
                         </ul>
                     </div>
+
                 </div>
             </div>
         </div>

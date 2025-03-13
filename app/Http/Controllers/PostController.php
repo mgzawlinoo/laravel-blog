@@ -38,9 +38,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
-        // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
-        $users = User::all();
+        $categories = Category::get()->pluck('name', 'id');
+        $users = User::get()->pluck('name', 'id');
         return view('backend.posts.create', compact('categories', 'users'));
     }
 
