@@ -12,4 +12,6 @@
             <x-frontend.post-item :post="$post" />
         @endforeach
     @endif
+
+    {{ $posts->withQueryString()->links() }}
 </x-frontend.layout>

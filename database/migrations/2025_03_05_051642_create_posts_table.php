@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->string('description');
             $table->text('content');
             $table->string('photo')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->boolean('published')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

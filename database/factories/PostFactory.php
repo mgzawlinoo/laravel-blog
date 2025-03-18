@@ -21,6 +21,7 @@ class PostFactory extends Factory
         return [
             'title' => $title,
             'slug' => Str::slug($title),
+            'description' => fake()->paragraph(1),
             'content' => fake()->paragraph(5),
             'category_id' => rand(1, 3),
             'user_id' => rand(1, 3)

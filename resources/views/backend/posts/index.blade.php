@@ -18,17 +18,30 @@
     @endif
 
     @if(session('search'))
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('search') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     @endif
 
     @if(session('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+    @endif
+
+    @if(session('danger'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('danger') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     @endif
 
     @isset($q)
@@ -64,14 +77,33 @@
                         <td class="text-end">
 
                             <div class="gap-2 d-grid d-md-flex justify-content-md-end">
-                                <a href="{{ route('backend.posts.show', $post->slug) }}" class="btn btn-primary btn-sm"><i class="text-white fa-regular fa-eye"></i></a>
-                                <a href="{{ route('backend.posts.edit', $post->slug) }}" class="btn btn-warning btn-sm"><i class="text-white fa-regular fa-pen-to-square"></i></a>
-                                <form action="{{ route('backend.posts.destroy', $post->slug) }}" method="POST" class="btn btn-danger btn-sm">
-                                    @csrf
-                                    @method('DELETE')
-                                <button onclick="return confirm('Are you sure?')" type="submit" class="bg-transparent border-0"><i class="text-white fa-regular fa-trash-can"></i></button>
-                            </form>
-                        </div>
+                                <a title="View" href="{{ route('backend.posts.show', $post->slug) }}" class="btn btn-primary btn-sm"><i class="text-white fa-regular fa-eye"></i></a>
+                                <a title="Edit" href="{{ route('backend.posts.edit', $post->slug) }}" class="btn btn-warning btn-sm"><i class="text-white fa-regular fa-pen-to-square"></i></a>
+
+                                {{-- delete --}}
+                                @if($post->trashed())
+                                    <form action="{{ route('backend.posts.permanentDelete', $post->slug) }}" method="POST" >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button title="Permanently Delete" onclick="return confirm('Are you sure? This will delete the post permanently')" type="submit" class="btn btn-danger btn-sm"><i class="text-white fa-regular fa-trash-can"></i></button>
+                                    </form>
+                                @else
+                                    <form action="{{ route('backend.posts.destroy', $post->slug) }}" method="POST" >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button title="Delete" onclick="return confirm('Are you sure to delete?')" type="submit" class="btn btn-secondary btn-sm"><i class="text-white fa-solid fa-trash"></i></button>
+                                    </form>
+                                @endif
+
+                                {{-- restore --}}
+                                @if($post->trashed())
+                                    <form action="{{ route('backend.posts.restore', $post->slug) }}" method="POST" >
+                                        @csrf
+                                        @method('DELETE')
+                                        <button title="Restore" onclick="return confirm('Are you sure to restore?')" type="submit" class="btn btn-success btn-sm"><i class="text-white fas fa-trash-restore"></i></button>
+                                    </form>
+                                @endif
+                            </div>
 
                         </td>
                     </tr>

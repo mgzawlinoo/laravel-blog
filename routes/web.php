@@ -24,7 +24,11 @@ Route::prefix('backend')->middleware('auth')->name('backend.')->group(function (
     // For Dashboard
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     // For Posts
-    Route::resource('posts', PostController::class);
+    Route::resource('posts', PostController::class)->withTrashed();
+
+    Route::delete('/posts/{post}/permanent-delete', [PostController::class, 'permanentDelete'])->name('posts.permanentDelete')->withTrashed();
+    Route::delete('/posts/{post}/restore', [PostController::class, 'restore'])->name('posts.restore')->withTrashed();
+
     Route::get('/posts-search', [PostController::class, 'search'])->name('posts.search');
 });
 

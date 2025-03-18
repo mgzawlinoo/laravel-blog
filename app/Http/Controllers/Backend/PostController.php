@@ -22,7 +22,8 @@ class PostController extends Controller
     public function index()
     {
         // get post with pagination orderby desc update at desc
-        $posts = Auth::user()->posts()->orderBy('published', 'desc')->orderBy('updated_at', 'desc')->paginate(5);
+        $posts = Auth::user()->posts()->withTrashed()
+        ->orderBy('updated_at', 'desc')->paginate(5);
         return view('backend.posts.index', compact('posts'));
     }
 
@@ -128,10 +129,26 @@ class PostController extends Controller
         if (! Gate::allows('crud-post', $post)) {
             abort(403);
         }
-        $result = $post->delete();
-        if($result) {
-            if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
+        $post->delete();
+        return redirect()->route('backend.posts.index')->with('danger', 'Post deleted.');
+    }
+
+    public function permanentDelete(Post $post)
+    {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
         }
-        return redirect()->route('backend.posts.index')->with('success', 'Post deleted successfully');
+        $post->forceDelete();
+        if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
+        return redirect()->route('backend.posts.index')->with('danger', 'Post deleted permanently.');
+    }
+
+    public function restore(Post $post)
+    {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
+        }
+        $post->restore();
+        return redirect()->route('backend.posts.index')->with('success', 'Post restored.');
     }
 }
