@@ -24,7 +24,7 @@
                         <i class="fa-regular fa-circle-user"></i><span class="ms-2 d-none d-md-inline">{{ Auth::user()->name}}</span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('backend.profile.edit') }}">Edit Profile</a></li>
                         <li><form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <a class="dropdown-item" href="{{ route('logout') }}"

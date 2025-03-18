@@ -129,6 +129,7 @@ class PostController extends Controller
         if (! Gate::allows('crud-post', $post)) {
             abort(403);
         }
+        $post->timestamps = false;
         $post->delete();
         return redirect()->route('backend.posts.index')->with('danger', 'Post deleted.');
     }
@@ -148,6 +149,7 @@ class PostController extends Controller
         if (! Gate::allows('crud-post', $post)) {
             abort(403);
         }
+        $post->timestamps = false;
         $post->restore();
         return redirect()->route('backend.posts.index')->with('success', 'Post restored.');
     }
