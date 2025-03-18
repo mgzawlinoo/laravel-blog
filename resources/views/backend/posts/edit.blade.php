@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <x-header class="btn-secondary" title="Edit Post" :route="route('backend.posts.index')" linkText="Back"></x-header>
+    <x-backend.main.header class="btn-secondary" title="Edit Post" :route="route('backend.posts.index')" linkText="Back"></x-backend.main.header>
 
     <div class="mx-auto col-md-8">
 
@@ -32,31 +32,12 @@
             @enderror
             </div>
 
-
-
-
-
-
-
-
-
-
-
-            
             <div class="mb-3 row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <label for="category_id" class="form-label">Category</label>
                     <select class="form-select" id="category_id" name="category_id">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}" {{$post->category_id == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label for="user_id" class="form-label">User</label>
-                    <select class="form-select" id="user_id" name="user_id">
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}" {{$post->user_id == $user->id ? 'selected' : ''}}>{{ $user->name }}</option>
                         @endforeach
                     </select>
                 </div>

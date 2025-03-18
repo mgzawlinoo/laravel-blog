@@ -4,42 +4,36 @@
 
 @section('content')
 
-    <x-header class="btn-secondary" title="Create Post" :route="route('backend.posts.index')" linkText="Back"></x-header>
+    <x-backend.main.header class="btn-secondary" title="Create Post" :route="route('backend.posts.index')" linkText="Back"></x-backend.main.header>
 
     <div class="mx-auto col-12 col-md-8">
         <form action="{{ route('backend.posts.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('POST')
 
-
-            <x-forms.row>
-                <x-forms.label for="title">Title</x-forms.label>
-                <x-forms.text-input name="title" type="text"
+            <x-backend.forms.row>
+                <x-backend.forms.label for="title">Title</x-backend.forms.label>
+                <x-backend.forms.text-input name="title" type="text"
                     :value="old('title')"
                     :isInvalid="$errors->has('title') || $errors->has('slug')"
                 />
-                <x-forms.error :errors="$errors->get('title')" />
-                <x-forms.error :errors="$errors->get('slug')" />
-            </x-forms.row>
+                <x-backend.forms.error :errors="$errors->get('title')" />
+                <x-backend.forms.error :errors="$errors->get('slug')" />
+            </x-backend.forms.row>
 
-            <x-forms.row>
-                <x-forms.label for="description">Description</x-forms.label>
-                <x-forms.text-input name="description" type="text"
+            <x-backend.forms.row>
+                <x-backend.forms.label for="description">Description</x-backend.forms.label>
+                <x-backend.forms.text-input name="description" type="text"
                     :value="old('description')"
                     :isInvalid="$errors->has('description')"
                 />
-                <x-forms.error :errors="$errors->get('description')" />
-            </x-forms.row>
+                <x-backend.forms.error :errors="$errors->get('description')" />
+            </x-backend.forms.row>
 
-            <x-forms.row>
-                <x-forms.label for="category_id">Category</x-forms.label>
-                <x-forms.select :options="$categories" id="category_id" name="category_id" />
-            </x-forms.row>
-
-            <x-forms.row>
-                <x-forms.label for="user_id">User</x-forms.label>
-                <x-forms.select :options="$users" id="user_id" name="user_id" />
-            </x-forms.row>
+            <x-backend.forms.row>
+                <x-backend.forms.label for="category_id">Category</x-backend.forms.label>
+                <x-backend.forms.select :options="$categories" id="category_id" name="category_id" />
+            </x-backend.forms.row>
 
             <div class="mb-3">
                 <label for="photo" class="form-label">Upload Image</label>
@@ -64,7 +58,7 @@
                 <input type="checkbox" class="form-check-input" id="published" name="published" value="1" {{ old('published') ? 'checked' : '' }}>
             </div>
 
-            <x-forms.button class="btn-primary">Submit</x-forms.button>
+            <x-backend.forms.button class="btn-primary">Submit</x-backend.forms.button>
 
         </form>
     </div>

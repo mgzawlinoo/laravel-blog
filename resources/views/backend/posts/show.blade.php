@@ -4,9 +4,9 @@
 
 @section('content')
 
-    <x-header class="btn-secondary" :title="$post->title" :route="route('backend.posts.index')" linkText="Back">
+    <x-backend.main.header class="btn-secondary" :title="$post->title" :route="route('backend.posts.index')" linkText="Back">
         <b>Description : </b>{{ $post->description }}
-    </x-header>
+    </x-backend.main.header>
 
     <div class="pb-5 mx-auto mb-5 col-md-8">
         <div class="my-4">

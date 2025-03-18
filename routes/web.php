@@ -1,18 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Backend\PostController;
+use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Backend\DashboardController;
 
-// Route For Backend
-Route::prefix('backend')->name('backend.')->group(function () {
-    // For Dashboard
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    // For Posts
-    Route::resource('posts', PostController::class);
-    Route::get('/posts-search', [PostController::class, 'search'])->name('posts.search');
-});
 
 // Route For Frontend
 Route::get('/', [HomeController::class, 'index'])->name('index');
@@ -25,3 +18,23 @@ Route::get('/user/{user}', [HomeController::class, 'getPostsByUser'])->name('get
 
 // posts by post
 Route::get('/post/{post}', [HomeController::class, 'post'])->name('post');
+
+// Route For Backend
+Route::prefix('backend')->middleware('auth')->name('backend.')->group(function () {
+    // For Dashboard
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    // For Posts
+    Route::resource('posts', PostController::class);
+    Route::get('/posts-search', [PostController::class, 'search'])->name('posts.search');
+});
+
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+// Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+require __DIR__.'/auth.php';

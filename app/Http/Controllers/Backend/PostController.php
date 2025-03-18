@@ -7,10 +7,12 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\UpdatePostRequest;
-use App\Http\Controllers\Controller;
 
 class PostController extends Controller
 {
@@ -20,18 +22,18 @@ class PostController extends Controller
     public function index()
     {
         // get post with pagination orderby desc update at desc
-        $posts = Post::orderBy('published', 'desc')->orderBy('updated_at', 'desc')->paginate(5);
+        $posts = Auth::user()->posts()->orderBy('published', 'desc')->orderBy('updated_at', 'desc')->paginate(5);
         return view('backend.posts.index', compact('posts'));
     }
 
-    public function search(Request $request) {
-        $q = $request['q'];
-        if(strlen($q) > 2) {
-            $data = Post::where('title', 'like', "%{$q}%")->orderBy('updated_at', 'desc')->paginate(5);
-            return view('backend.posts.index', ['posts' => $data, 'q' => $q]);
-        }
-        return redirect()->route('backend.posts.index')->with('search', 'Search must be at least 3 characters long');
-    }
+    // public function search(Request $request) {
+    //     $q = $request['q'];
+    //     if(strlen($q) > 2) {
+    //         $data = Post::where('title', 'like', "%{$q}%")->orderBy('updated_at', 'desc')->paginate(5);
+    //         return view('backend.posts.index', ['posts' => $data, 'q' => $q]);
+    //     }
+    //     return redirect()->route('backend.posts.index')->with('search', 'Search must be at least 3 characters long');
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -39,8 +41,7 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::get()->pluck('name', 'id');
-        $users = User::get()->pluck('name', 'id');
-        return view('backend.posts.create', compact('categories', 'users'));
+        return view('backend.posts.create', compact('categories'));
     }
 
     /**
@@ -57,10 +58,11 @@ class PostController extends Controller
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
             'published' => $request->published ? 1 : 0,
             'description' => $request->description,
         ]);
+
         return redirect()->route('backend.posts.index')->with('success', 'Post created successfully');
     }
 
@@ -69,6 +71,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
+        }
         return view('backend.posts.show', compact('post'));
     }
 
@@ -77,10 +82,13 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
+        }
         $categories = Category::all();
         // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
-        $users = User::all();
-        return view('backend.posts.edit', compact('post', 'categories', 'users'));
+        // $users = User::all();
+        return view('backend.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -88,6 +96,9 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, Post $post)
     {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
+        }
         // update လုပ်တဲ့ အထဲ ပုံ အသစ် မပါရင် နဂို db ထဲက path ကိုပဲ update ထည့်မယ်
         // တကယ်လို့ ပါနေရင် db က path ထဲက ပုံကို ဖျက်ပြီး အခု ပုံကို upload တင်မယ်, path အသစ်ကို update ထည့်မယ်
         $path = $post->photo;
@@ -102,7 +113,7 @@ class PostController extends Controller
             'content' => $request->content,
             'photo' => $path,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
             'published' => $request->published ? 1 : 0,
             'description' => $request->description,
         ]);
@@ -114,6 +125,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if (! Gate::allows('crud-post', $post)) {
+            abort(403);
+        }
         $result = $post->delete();
         if($result) {
             if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }

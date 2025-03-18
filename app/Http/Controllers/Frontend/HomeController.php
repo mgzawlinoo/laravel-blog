@@ -7,17 +7,19 @@ use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('category', 'user')->orderBy('published', 'desc')->orderBy('updated_at', 'desc')->paginate(5);
+        $posts = Post::with('category', 'user')->where('published', 1)->orderBy('updated_at', 'desc')->paginate(5);
         return view('frontend.index', compact('posts'));
     }
 
     public function post(Post $post)
     {
+        if($post->published == 0) return redirect()->route('index');
         return view('frontend.post', compact('post'));
     }
 
@@ -25,7 +27,7 @@ class HomeController extends Controller
     {
         // $posts = Post::where('category_id', $category->id)->get(); ဒါမျိုး မလိုအပ်တော့ပဲ model က eloquent ORM က
         // အောက်က အတိုင်း ယူသုံးလိုက်ရုံပဲ
-        $posts = $category->posts()->with('category', 'user')->get();
+        $posts = $category->posts()->with('category', 'user')->where('published', 1)->orderBy('updated_at', 'desc')->paginate(5);
         $name = $category->name;
         return view('frontend.result', compact('posts', 'name'));
     }
@@ -37,7 +39,7 @@ class HomeController extends Controller
         // $posts = $user->posts()->get();
         // အထက်ပါ နည်းတွေ နဲ့လဲ ရတယ်
 
-        $posts = $user->posts()->with('category', 'user')->get();
+        $posts = $user->posts()->with('category', 'user')->where('published', 1)->orderBy('updated_at', 'desc')->paginate(5);
         $name = $user->name;
 
         return view('frontend.result', compact('posts', 'name'));

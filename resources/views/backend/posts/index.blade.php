@@ -4,8 +4,8 @@
 
 @section('content')
 
-   <x-header class="btn-primary" title="Post List" :route="route('backend.posts.create')" icon="fa-solid fa-plus"  linkText="Create">
-   </x-header>
+   <x-backend.main.header class="btn-primary" title="Post List" :route="route('backend.posts.create')" icon="fa-solid fa-plus"  linkText="Create">
+   </x-backend.main.header>
 
     @if ($errors->any())
             <div class="alert alert-danger">

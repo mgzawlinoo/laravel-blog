@@ -34,7 +34,6 @@ class UpdatePostRequest extends FormRequest
             'slug' => 'string|unique:posts,slug,' . $this->post->id,
             'content' => 'required',
             'category_id' => 'required',
-            'user_id' => 'required',
             'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'required|string|max:255',
         ];
@@ -49,7 +48,6 @@ class UpdatePostRequest extends FormRequest
             'slug.unique' => 'အဆိုပါ အမည်ဖြင့် post ရှိနှင့်ပြီး ဖြစ်သည်',
             'content.required' => 'စာကိုယ် ထည့်ပါ',
             'category_id.required' => 'အမျိုးအစား ရွေးချယ်ပါ',
-            'user_id.required' => 'စာရေးသူ ရွေးချယ်ပါ',
             'photo.image' => 'ဓာတ်ပုံ မဟုတ်ပါ',
             'photo.mimes' => 'ဓာတ်ပုံ အမျိုးအစား အဖြစ် png, jpg, jpeg ကို သာလက်ခံပါတယ်',
             'photo.max' => 'ဓာတ်ပုံ အများဆုံး 2mb သာ ရှိရမည်',

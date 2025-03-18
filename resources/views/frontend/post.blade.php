@@ -1,4 +1,4 @@
-<x-frontend.layout>
+<x-frontend.main.layout>
 
     <div class="p-3 mb-3 rounded bg-secondary d-flex justify-content-between align-items-center">
         <h1 class="p-0 m-0 text-warning">{{ $post->title }}</h1>
@@ -21,4 +21,4 @@
 
     </div>
 
-</x-frontend.layout>
+</x-frontend.main.layout>

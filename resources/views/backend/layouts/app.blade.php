@@ -7,7 +7,7 @@
                 <nav class="rounded navbar navbar-light bg-light">
                     <div class="container">
                       <a class="navbar-brand" href="{{ route('backend.dashboard') }}">
-                        <i class="fa-brands fa-hive"></i> <span class="d-none d-md-inline">Admin Panel</span>
+                        <i class="fa-brands fa-hive"></i> <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
                       </a>
                     </div>
                 </nav>
@@ -15,21 +15,22 @@
                 <div class="mt-2 list-group">
                     <a href="{{ route('backend.posts.index') }}" class="list-group-item list-group-item-action">
                         <i class="fa-solid fa-list"></i><span class="ms-2 d-none d-md-inline">Posts</span></a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fa-solid fa-layer-group"></i><span class="ms-2 d-none d-md-inline">Categories</span></a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                        <i class="fa-solid fa-users"></i><span class="ms-2 d-none d-md-inline">Users</span></a>
                     <a href="{{ route('index') }}" target="_blank" class="list-group-item list-group-item-action">
                         <i class="fa-solid fa-globe"></i><span class="ms-2 d-none d-md-inline">Preview Website</span></a>
                 </div>
 
                 <div class="mt-auto btn-group dropup">
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa-regular fa-circle-user"></i><span class="ms-2 d-none d-md-inline">User Name</span>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-circle-user"></i><span class="ms-2 d-none d-md-inline">{{ Auth::user()->name}}</span>
                     </button>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" href="#">Profile</a></li>
-                        <li><a class="dropdown-item" href="#">Logout</a></li>
+                        <li><form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                            onclick="event.preventDefault(); this.closest('form').submit();">
+                            {{ __('Log Out') }}</a>
+                        </form></li>
                     </ul>
                 </div>
 

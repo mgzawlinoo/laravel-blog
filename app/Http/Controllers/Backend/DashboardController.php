@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Models\Post;
-use App\Models\User;
-use App\Models\Category;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -14,10 +12,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $totalPosts = Post::count();
-        $totalCategories = Category::count();
-        $totalUsers = User::count();
-        return view('backend.dashboard', compact('totalPosts', 'totalCategories', 'totalUsers'));
+        $user = Auth::user();
+        $totalPosts = $user->posts->count();
+        return view('backend.dashboard', compact('totalPosts'));
     }
 
 }
