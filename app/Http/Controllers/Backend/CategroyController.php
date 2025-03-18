@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
-use App\Http\Requests\StoreCategroyRequest;
-use App\Http\Requests\UpdateCategroyRequest;
-use App\Models\Categroy;
+use App\Models\Category;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
 class CategroyController extends Controller
 {
@@ -27,7 +28,7 @@ class CategroyController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCategroyRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class CategroyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categroy $categroy)
+    public function show(Category $category)
     {
         //
     }
@@ -43,7 +44,7 @@ class CategroyController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Categroy $categroy)
+    public function edit(Category $category)
     {
         //
     }
@@ -51,7 +52,7 @@ class CategroyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategroyRequest $request, Categroy $categroy)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
     }
@@ -59,7 +60,7 @@ class CategroyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categroy $categroy)
+    public function destroy(Category $category)
     {
         //
     }

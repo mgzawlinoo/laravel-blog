@@ -2,7 +2,7 @@
 
 <div class="post-preview">
     <a href="{{ route('post', $post->slug) }}">
-        <h2 class="post-title">{{ $post->title }}</h2>
+        <h2 class="post-title text-warning">{{ $post->title }}</h2>
         <h3 class="post-subtitle">{{ $post->description }}</h3>
     </a>
     <p class="post-meta">
