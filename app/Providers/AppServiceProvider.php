@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+
         // Sharing data with a specific view
         View::composer('components.frontend.main.sidebar', function ($view) {
             $view->with('categories', Category::all());

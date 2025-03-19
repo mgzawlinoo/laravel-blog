@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Backend\ProfileController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Backend\PostController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Backend\ProfileController;
 use App\Http\Controllers\Backend\DashboardController;
 
 
@@ -18,6 +19,10 @@ Route::get('/user/{user}', [HomeController::class, 'getPostsByUser'])->name('get
 
 // posts by post
 Route::get('/post/{post}', [HomeController::class, 'post'])->name('post');
+
+Route::post('/comments/{post}', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+
+Route::post('/comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply')->middleware('auth');
 
 // Route For Backend
 Route::prefix('backend')->middleware('auth')->name('backend.')->group(function () {
@@ -34,6 +39,7 @@ Route::prefix('backend')->middleware('auth')->name('backend.')->group(function (
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 
