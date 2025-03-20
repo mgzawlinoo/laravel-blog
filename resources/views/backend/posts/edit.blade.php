@@ -43,6 +43,21 @@
                 </div>
             </div>
 
+            <div class="mb-3 row">
+                <div class="col-md-12">
+                    <label for="tags" class="form-label">Tags</label>
+                    <select class="form-select js-example-basic-multiple"  id="tags" name="tags[]" multiple>
+                        @foreach ($tags as $tag)
+                            <option value="{{ $tag->id }}" 
+                                @foreach ($post->tags as $t)
+                                    {{ $t->id === $tag->id ? 'selected': '' }}
+                                @endforeach
+                                >{{ $tag->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label for="photo" class="form-label">Upload Image</label>
                 <div class="gap-3 d-flex align-items-center">

@@ -23,7 +23,7 @@ class PostController extends Controller
     public function index()
     {
         // get post with pagination orderby desc update at desc
-        $posts = Auth::user()->posts()->withTrashed()
+        $posts = Auth::user()->posts()->withTrashed()->with('tags')
         ->orderBy('updated_at', 'desc')->paginate(5);
 
         return view('backend.posts.index', compact('posts'));
@@ -56,7 +56,7 @@ class PostController extends Controller
         if($request->hasFile('photo')) $path = $request->file('photo')->store('photos', 'public');
         else  $path = null;
 
-        Post::create([
+        $post = Post::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
             'content' => $request->content,
@@ -66,6 +66,8 @@ class PostController extends Controller
             'published' => $request->published ? 1 : 0,
             'description' => $request->description,
         ]);
+
+        $post->tags()->attach($request->tags);
 
         return redirect()->route('backend.posts.index')->with('success', 'Post created successfully');
     }
@@ -92,7 +94,8 @@ class PostController extends Controller
         $categories = Category::all();
         // get user (auth အတွက် မလုပ်ရသေးတဲ့ အတွက် လောလောဆယ် user ကို select ရွေးလို့ ရမယ်)
         // $users = User::all();
-        return view('backend.posts.edit', compact('post', 'categories'));
+        $tags = Tag::all();
+        return view('backend.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -121,6 +124,8 @@ class PostController extends Controller
             'published' => $request->published ? 1 : 0,
             'description' => $request->description,
         ]);
+
+        $post->tags()->sync($request->tags);
         return redirect()->route('backend.posts.index')->with('success', 'Post updated successfully');
     }
 
@@ -143,6 +148,7 @@ class PostController extends Controller
             abort(403);
         }
         $post->forceDelete();
+        $post->tags()->detach(); 
         if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
         return redirect()->route('backend.posts.index')->with('danger', 'Post deleted permanently.');
     }

@@ -73,7 +73,11 @@
                         <td class="text-center"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
                         <td class="text-center">{{ $post->category->name }}</td>
                         <td class="text-center">
-                            #
+                            @foreach ($post->tags as $tag)
+                            <button type="button" class="btn btn-secondary btn-sm">
+                               {{$tag->name}}
+                              </button>
+                            @endforeach
                         </td>
                         <td class="text-center">{{ $post->user->name }}</td>
                         <td class="text-center">{{ $post->updated_at->diffForHumans() }}</td>
