@@ -58,6 +58,7 @@
                     <th class="text-start">Title</th>
                     <th class="text-center">Image</th>
                     <th class="text-center">Category</th>
+                    <th class="text-center">Tags</th>
                     <th class="text-center">Author</th>
                     <th class="text-center">Updated At</th>
                     <th class="text-center">Published</th>
@@ -71,6 +72,9 @@
                         <td class="text-start">{!! redColor($post->title) !!}</td>
                         <td class="text-center"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
                         <td class="text-center">{{ $post->category->name }}</td>
+                        <td class="text-center">
+                            #
+                        </td>
                         <td class="text-center">{{ $post->user->name }}</td>
                         <td class="text-center">{{ $post->updated_at->diffForHumans() }}</td>
                         <td class="text-center">{{ $post->published ? 'Yes' : 'No' }}</td>

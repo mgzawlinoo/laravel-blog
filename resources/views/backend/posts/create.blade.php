@@ -35,6 +35,11 @@
                 <x-backend.forms.select :options="$categories" id="category_id" name="category_id" />
             </x-backend.forms.row>
 
+            <x-backend.forms.row>
+                <x-backend.forms.label for="tags">Tags</x-backend.forms.label>
+                <x-backend.forms.select class="js-example-basic-multiple" :options="$tags" id="tags" name="tags[]" multiple />
+            </x-backend.forms.row>
+
             <div class="mb-3">
                 <label for="photo" class="form-label">Upload Image</label>
                 <div class="gap-3 d-flex align-items-center">
@@ -63,6 +68,7 @@
         </form>
     </div>
 
+
     <script>
         const chooseFile = document.getElementById("photo");
         const imgPreview = document.getElementById("preview-image");
@@ -82,6 +88,7 @@
                 });
             }
         }
+
     </script>
 
 @endsection

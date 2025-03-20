@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -24,6 +25,7 @@ class PostController extends Controller
         // get post with pagination orderby desc update at desc
         $posts = Auth::user()->posts()->withTrashed()
         ->orderBy('updated_at', 'desc')->paginate(5);
+
         return view('backend.posts.index', compact('posts'));
     }
 
@@ -42,7 +44,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::get()->pluck('name', 'id');
-        return view('backend.posts.create', compact('categories'));
+        $tags = Tag::get()->pluck('name', 'id');
+        return view('backend.posts.create', compact('categories', 'tags'));
     }
 
     /**
