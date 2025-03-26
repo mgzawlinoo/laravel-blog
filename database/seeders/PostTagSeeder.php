@@ -17,7 +17,7 @@ class PostTagSeeder extends Seeder
         $users = User::with('posts')->get();
         foreach($users as $user) {
             foreach($user->posts as $post) {
-                $tags = Tag::pluck('id','name')->random(random_int(1,5))->toArray();
+                $tags = Tag::pluck('id','name')->random(random_int(1,2))->toArray();
                 $post->tags()->attach($tags);
             }
         }

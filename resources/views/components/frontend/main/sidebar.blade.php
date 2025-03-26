@@ -20,6 +20,16 @@
             </li>
             @endforeach
         </ul>
+
+        <h3 class="mt-4">Tags</h3>
+        <ul class="list-group">
+            @foreach ($tags as $tag)
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a class="flex-grow-1" href="{{ route('getPostsByTag', $tag->slug) }}">{{ $tag->name }}</a>
+                <span class="rounded badge text-bg-secondary">{{ $tag->getPostsCountAttribute() }}</span>
+            </li>
+            @endforeach
+        </ul>
     </div>
 
 </div>

@@ -12,6 +12,15 @@
                 @if (Route::has('login'))
                     @auth
                         <li class="nav-item"><a href="{{ route('backend.dashboard')}}" class="py-3 nav-link px-lg-3 py-lg-4">Dashboard</a></li>
+                        <li class="nav-item">
+                            <form class="d-inline" method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a style="font-size: 0.75rem;font-weight: 800;letter-spacing: 0.0625em;text-transform: uppercase;"
+                                href="{{ route('logout') }}" class="py-3 text-white nav-link px-lg-3 py-lg-4"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+                                {{ __('Log Out') }}</a>
+                            </form>
+                        </li>
                     @else
                         <li class="nav-item"><a href="{{ route('login') }}" class="py-3 nav-link px-lg-3 py-lg-4">Log in</a></li>
                         @if (Route::has('register'))

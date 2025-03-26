@@ -51,8 +51,8 @@
     @endisset
 
     <div class="table-responsive">
-        <table class="table text-center align-middle table-striped">
-            <thead>
+        <table class="table text-center border table-hover">
+            <thead class="thead-dark">
                 <tr>
                     <th class="text-start">#</th>
                     <th class="text-start">Title</th>
@@ -68,21 +68,21 @@
             <tbody>
                 @foreach ($posts as $post)
                     <tr>
-                        <td class="text-start">{{ $posts->firstItem() + $loop->index }}</td>
-                        <td class="text-start">{!! redColor($post->title) !!}</td>
-                        <td class="text-center"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
-                        <td class="text-center">{{ $post->category->name }}</td>
-                        <td class="text-center">
+                        <td class="align-middle text-start">{{ $posts->firstItem() + $loop->index }}</td>
+                        <td class="align-middle text-start">{!! redColor($post->title) !!}</td>
+                        <td class="text-center align-middle"> <img src="{{ $post->photo ? asset('storage/' . $post->photo) : 'https://placehold.co/50x50/DDD/333' }}" alt="Post Photo" style="max-width: 100%; height: 50px">
+                        <td class="text-center align-middle">{{ $post->category->name }}</td>
+                        <td class="text-center align-middle">
                             @foreach ($post->tags as $tag)
-                            <button type="button" class="btn btn-secondary btn-sm">
+                            <button type="button" class="btn btn-success btn-sm">
                                {{$tag->name}}
                               </button>
                             @endforeach
                         </td>
-                        <td class="text-center">{{ $post->user->name }}</td>
-                        <td class="text-center">{{ $post->updated_at->diffForHumans() }}</td>
-                        <td class="text-center">{{ $post->published ? 'Yes' : 'No' }}</td>
-                        <td class="text-end">
+                        <td class="text-center align-middle">{{ $post->user->name }}</td>
+                        <td class="text-center align-middle">{{ $post->updated_at->diffForHumans() }}</td>
+                        <td class="text-center align-middle">{{ $post->published ? 'Yes' : 'No' }}</td>
+                        <td class="align-middle text-end">
 
                             <div class="gap-2 d-grid d-md-flex justify-content-md-end">
                                 <a title="View" href="{{ route('backend.posts.show', $post->slug) }}" class="btn btn-primary btn-sm"><i class="text-white fa-regular fa-eye"></i></a>

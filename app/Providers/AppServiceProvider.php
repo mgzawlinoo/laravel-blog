@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
@@ -29,8 +30,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Sharing data with a specific view
         View::composer('components.frontend.main.sidebar', function ($view) {
-            $view->with('categories', Category::all());
-            $view->with('users', User::all());
+            $view->with('categories', Category::get());
+            $view->with('users', User::get());
+            $view->with('tags', Tag::get());
         });
 
         Gate::define('crud-post', function (User $user, Post $post) {

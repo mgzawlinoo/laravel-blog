@@ -17,11 +17,23 @@ Route::get('/category/{category}', [HomeController::class, 'getPostsByCategory']
 // posts by user
 Route::get('/user/{user}', [HomeController::class, 'getPostsByUser'])->name('getPostsByUser');
 
-// posts by post
+// posts by tag
+Route::get('/tag/{tag}', [HomeController::class, 'getPostsByTag'])->name('getPostsByTag');
+
+// view post
 Route::get('/post/{post}', [HomeController::class, 'post'])->name('post');
 
+// like
+Route::post('/like/{post}', [HomeController::class, 'like'])->name('like')->middleware('auth');
+
+// dislike
+Route::post('/dislike/{post}', [HomeController::class, 'dislike'])->name('dislike')->middleware('auth');
+
+
+// comment
 Route::post('/comments/{post}', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
 
+// reply
 Route::post('/comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply')->middleware('auth');
 
 // Route For Backend

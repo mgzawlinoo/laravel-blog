@@ -11,10 +11,20 @@ class Tag extends Model
     use HasFactory;
     //
     protected $fillable = ['name', 'slug'];
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function posts()
     {
         return $this->belongsToMany(Post::class);
     }
-    
+
+    // posts count
+    public function getPostsCountAttribute()
+    {
+        return $this->posts()->count();
+    }
+
 }

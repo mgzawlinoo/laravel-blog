@@ -23,7 +23,7 @@ class PostController extends Controller
     public function index()
     {
         // get post with pagination orderby desc update at desc
-        $posts = Auth::user()->posts()->withTrashed()->with('tags')
+        $posts = Auth::user()->posts()->withTrashed()->with('category', 'user', 'tags')
         ->orderBy('updated_at', 'desc')->paginate(5);
 
         return view('backend.posts.index', compact('posts'));
@@ -148,7 +148,7 @@ class PostController extends Controller
             abort(403);
         }
         $post->forceDelete();
-        $post->tags()->detach(); 
+        $post->tags()->detach();
         if(!empty($post->photo)) { Storage::disk('public')->delete($post->photo); }
         return redirect()->route('backend.posts.index')->with('danger', 'Post deleted permanently.');
     }
