@@ -55,5 +55,11 @@ class HomeController extends Controller
 
         return view('frontend.result', compact('posts', 'name'));
     }
-
+    public function getPostsByFollowing()
+    {
+        // get following
+        $following = Auth::user()->following()->get()->pluck('following_id')->toArray();
+        $posts = Post::whereIn('user_id', $following)->with('category', 'user', 'tags')->where('published', 1)->orderBy('updated_at', 'desc')->paginate(5);
+        return view('frontend.following-result', compact('posts'));
+    }
 }

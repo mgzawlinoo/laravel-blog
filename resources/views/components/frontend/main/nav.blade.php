@@ -14,6 +14,7 @@
                 @if (Route::has('login'))
                     @auth
                         <li class="nav-item"><a href="{{ route('backend.dashboard')}}" class="py-3 nav-link px-lg-3 py-lg-4">Dashboard</a></li>
+                        <li class="nav-item"><a href="{{ route('getPostsByFollowing')}}" class="py-3 nav-link px-lg-3 py-lg-4">Followings</a></li>
                         <li class="nav-item">
                             <form class="d-inline" method="POST" action="{{ route('logout') }}">
                                 @csrf

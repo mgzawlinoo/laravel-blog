@@ -21,7 +21,6 @@ Route::get('/tag/{tag}', [HomeController::class, 'getPostsByTag'])->name('getPos
 // view post
 Route::get('/post/{post}', [HomeController::class, 'post'])->name('post');
 
-
 // Route For Frontend (Auth)
 Route::middleware('auth')->group(function () {
     // like
@@ -36,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/comments/{post}', [CommentController::class, 'store'])->name('comments.store');
     // reply
     Route::post('/comments/reply/{comment}', [CommentController::class, 'reply'])->name('comments.reply');
+    // posts by following
+    Route::get('/following', [HomeController::class, 'getPostsByFollowing'])->name('getPostsByFollowing');
 });
 
 // Route For Backend

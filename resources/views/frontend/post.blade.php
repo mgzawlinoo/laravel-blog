@@ -51,27 +51,27 @@
 
             <!-- Follow Button -->
             @if (Auth::check())
-            @if (Auth::user()->isFollowing($post->user))
-                <form action="{{ route('unfollow', $post->user) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="rounded btn btn-warning btn-sm">
-                        <span class="text-white me-2">
-                            <i class="bi bi-person-plus"></i>
-                            Unfollow
-                        </span>
-                    </button>
-                </form>
-            @else
-                <form action="{{ route('follow', $post->user) }}" method="POST">
-                    @csrf
-                    <button type="submit" class="rounded btn btn-warning btn-sm">
-                        <span class="text-white me-2">
-                            <i class="bi bi-person-plus"></i>
-                            Follow
-                        </span>
-                    </button>
-                </form>
-            @endif
+                @if (Auth::user()->isFollowing($post->user))
+                    <form action="{{ route('unfollow', $post->user) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="rounded btn btn-warning btn-sm">
+                            <span class="text-white me-2">
+                                <i class="bi bi-person-plus"></i>
+                                Unfollow
+                            </span>
+                        </button>
+                    </form>
+                @else
+                    <form action="{{ route('follow', $post->user) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="rounded btn btn-warning btn-sm">
+                            <span class="text-white me-2">
+                                <i class="bi bi-person-plus"></i>
+                                Follow
+                            </span>
+                        </button>
+                    </form>
+                @endif
             @else
                 <a href="{{ route('login') }}" class="rounded btn btn-warning btn-sm">
                     <span class="text-white me-2">
