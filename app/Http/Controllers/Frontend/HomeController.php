@@ -44,9 +44,8 @@ class HomeController extends Controller
         // အထက်ပါ နည်းတွေ နဲ့လဲ ရတယ်
 
         $posts = $user->posts()->with('category', 'user', 'tags')->where('published', 1)->orderBy('updated_at', 'desc')->paginate(5);
-        $name = $user->name;
 
-        return view('frontend.result', compact('posts', 'name'));
+        return view('frontend.author-result', compact('posts', 'user'));
     }
 
     public function getPostsByTag(Tag $tag)
@@ -56,51 +55,5 @@ class HomeController extends Controller
 
         return view('frontend.result', compact('posts', 'name'));
     }
-
-    public function like(Post $post)
-    {
-        // check already like
-        $like = Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
-        if(!$like) {
-
-            // check dislike
-            $dislike = Dislike::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
-            if($dislike) {
-                $dislike->delete();
-            }
-            Like::create([
-                'post_id' => $post->id,
-                'user_id' => Auth::user()->id,
-            ]);
-
-        } else {
-            $like->delete();
-        }
-
-        return redirect()->back();
-    }
-
-    public function dislike(Post $post)
-    {
-        // check already dislike
-        $dislike = Dislike::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
-        if(!$dislike) {
-
-            // check like
-            $like = Like::where('post_id', $post->id)->where('user_id', Auth::user()->id)->first();
-            if($like) {
-                $like->delete();
-            }
-            Dislike::create([
-                'post_id' => $post->id,
-                'user_id' => Auth::user()->id,
-            ]);
-        } else {
-            $dislike->delete();
-        }
-
-        return redirect()->back();
-    }
-
 
 }

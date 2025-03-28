@@ -15,5 +15,6 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ Vite::asset('resources/frontend/css/styles.css') }}" rel="stylesheet" />
         <script src="//unpkg.com/alpinejs" defer></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     </head>
     <body>

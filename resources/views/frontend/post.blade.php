@@ -10,7 +10,7 @@
                 @csrf
                 <button type="submit" class="btn btn-primary btn-sm me-2">
                     <span class="text-white me-2">{{ $post->likes()->count() }}
-                        Like
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
                     </span>
                 </button>
             </form>
@@ -18,31 +18,73 @@
                 @csrf
                 <button type="submit" class="btn btn-danger btn-sm">
                     <span class="text-white me-2">{{ $post->dislikes()->count() }}
-                        Dislike
+                        <i class="bi bi-hand-thumbs-down-fill"></i>
                     </span>
                 </button>
             </form>
             @else
                 <a href="{{ route('login') }}" class="text-white text-decoration-none btn btn-primary btn-sm me-2">
                     <span class="text-white me-2">{{ $post->likes()->count() }}
-                        Like
+                        <i class="bi bi-hand-thumbs-up-fill"></i>
                     </span>
                 </a>
                 <a href="{{ route('login') }}" class="text-white text-decoration-none btn btn-danger btn-sm">
                     <span class="text-white me-2">{{ $post->dislikes()->count() }}
-                        Dislike
+                        <i class="bi bi-hand-thumbs-down-fill"></i>
                     </span>
                 </a>
             @endif
         </div>
     </div>
 
-    <!-- Post by and Category -->
-    <p class="my-4 post-meta">
-        <b>Posted by : </b>
-        <a class="text-primary text-decoration-none" href="{{ route('getPostsByUser', $post->user) }}">{{ $post->user->name }}</a>
-        <span class="text-muted">{{ $post->updated_at->diffForHumans() }}</span>
-        <br><b>Category : </b><a class="text-primary text-decoration-none" href="{{ route('getPostsByCategory', $post->category) }}">{{ $post->category->name }}</a>
+    <!-- Post by and Follow -->
+    <div class="my-4 d-flex justify-content-between align-items-center">
+
+        <div>
+            <b>Posted by : </b>
+            <a class="text-primary text-decoration-none" href="{{ route('getPostsByUser', $post->user) }}">
+                {{ $post->user->name }}</a>
+            <span class="text-muted">({{ $post->user->followers()->count() }} Followers) {{ $post->updated_at->diffForHumans() }}</span><br>
+        </div>
+
+        <div>
+
+            <!-- Follow Button -->
+            @if (Auth::check())
+            @if (Auth::user()->isFollowing($post->user))
+                <form action="{{ route('unfollow', $post->user) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="rounded btn btn-warning btn-sm">
+                        <span class="text-white me-2">
+                            <i class="bi bi-person-plus"></i>
+                            Unfollow
+                        </span>
+                    </button>
+                </form>
+            @else
+                <form action="{{ route('follow', $post->user) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="rounded btn btn-warning btn-sm">
+                        <span class="text-white me-2">
+                            <i class="bi bi-person-plus"></i>
+                            Follow
+                        </span>
+                    </button>
+                </form>
+            @endif
+            @else
+                <a href="{{ route('login') }}" class="rounded btn btn-warning btn-sm">
+                    <span class="text-white me-2">
+                        <i class="bi bi-person-plus"></i>
+                        Follow
+                    </span>
+                </a>
+            @endif
+        </div>
+    </div>
+
+     <div class="my-4">
+        <b>Category : </b><a class="text-primary text-decoration-none" href="{{ route('getPostsByCategory', $post->category) }}">{{ $post->category->name }}</a>
         <br><b>Tags : </b>
             @foreach($post->tags as $tag)
                 @if($loop->last)
@@ -51,7 +93,7 @@
                     <a class="text-primary text-decoration-none" href="{{ route('getPostsByTag', $tag->slug) }}">{{ $tag->name }}</a>,
                 @endif
             @endforeach
-    </p>
+    </div>
 
     <!-- Main Content -->
     <div class="pb-5 mx-auto mb-5">
@@ -107,7 +149,7 @@
                 </div>
             @endforeach
         @else
-            <p class="text-white">No comments available</p>
+            <p>No comments available</p>
         @endif
     </div>
 

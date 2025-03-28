@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dislikes', function (Blueprint $table) {
+        Schema::create('followers', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+            $table->unsignedBigInteger('following_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->unique(['post_id', 'user_id']);
-            $table->index(['post_id', 'user_id']);
+            $table->foreign('following_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unique(['user_id', 'following_id']);
+            $table->index(['user_id', 'following_id']);
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dislikes');
+        Schema::dropIfExists('followers');
     }
 };
