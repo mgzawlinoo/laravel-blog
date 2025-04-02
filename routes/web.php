@@ -65,3 +65,6 @@ Route::prefix('backend')->middleware('auth')->name('backend.')->group(function (
 
 
 require __DIR__.'/auth.php';
+
+// API Routes
+
