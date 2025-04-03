@@ -6,6 +6,7 @@ use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -42,7 +43,6 @@ class PostController extends Controller
             'description' => 'required|string|max:255',
             'content' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
             'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'published' => 'required|boolean'
         ]);
@@ -62,7 +62,7 @@ class PostController extends Controller
             'description' => $request->description,
             'content' => $request->content,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
+            'user_id' => auth()->user()->id,
             'photo' => $path,
             'published' => $request->published
         ]);
@@ -81,11 +81,18 @@ class PostController extends Controller
 
     public function update(Request $request)
     {
+
         $post = Post::find($request->id);
         if (!$post) {
             return response()->json([
                 'error' => 'Post not found'
             ], 422);
+        }
+
+        if (! Gate::allows('crud-post', $post)) {
+            return response()->json([
+                'error' => 'Unauthorized'
+            ], 403);
         }
 
         $request->merge([
@@ -98,7 +105,6 @@ class PostController extends Controller
             'description' => 'required|string|max:255',
             'content' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'user_id' => 'required|exists:users,id',
             'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'published' => 'required|boolean'
         ]);
@@ -121,7 +127,7 @@ class PostController extends Controller
             'description' => $request->description,
             'content' => $request->content,
             'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
+            'user_id' => auth()->user()->id,
             'photo' => $path,
             'published' => $request->published
         ]);
