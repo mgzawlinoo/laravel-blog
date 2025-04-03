@@ -143,6 +143,16 @@ class PostController extends Controller
             'published' => $request->published
         ]);
 
+        $tags = $request->tags;
+        if($tags) {
+            foreach($tags as $tag) {
+                if(Tag::where('id', $tag)->exists()) {
+                    $list[] = $tag;
+                }
+            }
+        }
+        $post->tags()->sync($list);
+
         return response()->json([
             'post' => $post,
             'message' => 'Post updated successfully',
