@@ -80,7 +80,16 @@ class UserController extends Controller
 
         return response()->json([
             'user' => auth()->user(),
+            'token' => auth()->user()->createToken('auth-token')->plainTextToken,
             'message' => 'Login successful',
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json([
+            'message' => 'Logout successful',
         ], 200);
     }
 }

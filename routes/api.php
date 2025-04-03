@@ -13,10 +13,12 @@ Route::get('/users/{id}', [UserController::class, 'show']);
 
 Route::post('/users/register', [UserController::class, 'register']);
 Route::post('/users/login', [UserController::class, 'login']);
+Route::post('/users/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 // Posts
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
 
-Route::post('/posts', [PostController::class, 'store']);
+Route::post('/posts', [PostController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/posts/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
 

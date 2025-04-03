@@ -6,10 +6,12 @@ use App\Models\Tag;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use Laravel\Sanctum\Sanctum;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
+
         Paginator::useBootstrapFive();
 
         // Sharing data with a specific view
