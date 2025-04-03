@@ -32,10 +32,10 @@ class StorePostRequest extends FormRequest
         return [
             'title' => 'required|string|max:255|min:4',
             'slug' => 'string|unique:posts,slug',
-            'content' => 'required',
-            'category_id' => 'required',
-            'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'required|string|max:255',
+            'content' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
         ];
     }
 

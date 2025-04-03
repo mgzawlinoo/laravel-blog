@@ -33,7 +33,7 @@ class UpdatePostRequest extends FormRequest
             'title' => 'required|string|max:255|min:4',
             'slug' => 'string|unique:posts,slug,' . $this->post->id,
             'content' => 'required',
-            'category_id' => 'required',
+            'category_id' => 'required|exists:categories,id',
             'photo' => 'image|mimes:jpeg,png,jpg|max:2048',
             'description' => 'required|string|max:255',
         ];

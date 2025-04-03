@@ -53,8 +53,20 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+
         if($request->hasFile('photo')) $path = $request->file('photo')->store('photos', 'public');
         else  $path = null;
+
+        // $tags = $request->tags;
+        // // check tags exist
+        // foreach($tags as $tag) {
+        //     if(!Tag::where('name', $tag)->exists()) {
+        //         Tag::create([
+        //             'name' => $tag,
+        //             'slug' => Str::slug($tag)
+        //         ]);
+        //     }
+        // }
 
         $post = Post::create([
             'title' => $request->title,
@@ -67,7 +79,14 @@ class PostController extends Controller
             'description' => $request->description,
         ]);
 
-        $post->tags()->attach($request->tags);
+        $tags = $request->tags;
+        if($tags) {
+            foreach($tags as $tag) {
+                if(Tag::where('id', $tag)->exists()) {
+                    $post->tags()->attach($tag);
+                }
+            }
+        }
 
         return redirect()->route('backend.posts.index')->with('success', 'Post created successfully');
     }
@@ -125,7 +144,16 @@ class PostController extends Controller
             'description' => $request->description,
         ]);
 
-        $post->tags()->sync($request->tags);
+        $tags = $request->tags;
+        if($tags) {
+            foreach($tags as $tag) {
+                if(Tag::where('id', $tag)->exists()) {
+                    $list[] = $tag;
+                }
+            }
+        }
+        $post->tags()->sync($list);
+
         return redirect()->route('backend.posts.index')->with('success', 'Post updated successfully');
     }
 

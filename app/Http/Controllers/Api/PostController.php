@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Tag;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -33,6 +34,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+
         $request->merge([
             'slug' => Str::slug($request->title)
         ]);
@@ -66,6 +68,15 @@ class PostController extends Controller
             'photo' => $path,
             'published' => $request->published
         ]);
+
+        $tags = $request->tags;
+        if($tags) {
+            foreach($tags as $tag) {
+                if(Tag::where('id', $tag)->exists()) {
+                    $post->tags()->attach($tag);
+                }
+            }
+        }
 
         if (!$post) {
             return response()->json([
