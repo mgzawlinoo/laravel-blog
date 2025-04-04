@@ -43,5 +43,9 @@ class AppServiceProvider extends ServiceProvider
             return $user->id === $post->user_id;
         });
 
+        // Prevent lazy loading
+        // eg foreach loop
+        // \Illuminate\Database\Eloquent\Model::preventLazyLoading();
+
     }
 }

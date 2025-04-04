@@ -23,9 +23,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::find($id);
         return response()->json([
             'post' => $post,
             'message' => 'Success'
@@ -90,15 +89,8 @@ class PostController extends Controller
         ], 201);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, Post $post)
     {
-
-        $post = Post::find($request->id);
-        if (!$post) {
-            return response()->json([
-                'error' => 'Post not found'
-            ], 422);
-        }
 
         if (! Gate::allows('crud-post', $post)) {
             return response()->json([

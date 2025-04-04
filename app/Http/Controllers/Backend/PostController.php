@@ -26,6 +26,11 @@ class PostController extends Controller
         $posts = Auth::user()->posts()->withTrashed()->with('category', 'user', 'tags')
         ->orderBy('updated_at', 'desc')->paginate(5);
 
+        // there are three type of pagination
+        // 1. simple pagination
+        // 2. pagination
+        // 3. cursor pagination
+
         return view('backend.posts.index', compact('posts'));
     }
 

@@ -17,8 +17,8 @@ Route::post('/users/logout', [UserController::class, 'logout'])->middleware('aut
 
 // Posts
 Route::get('/posts', [PostController::class, 'index']);
-Route::get('/posts/{id}', [PostController::class, 'show']);
+Route::get('/posts/{post:id}', [PostController::class, 'show']);
 
 Route::post('/posts', [PostController::class, 'store'])->middleware('auth:sanctum');
-Route::post('/posts/{id}', [PostController::class, 'update'])->middleware('auth:sanctum');
+Route::post('/posts/{post:id}', [PostController::class, 'update'])->middleware('auth:sanctum');
 
